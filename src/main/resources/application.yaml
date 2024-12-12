@@ -1,3 +1,33 @@
 spring:
   application:
     name: raskub-auth-api
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 71901923772-bc50k353hk0ll3d749umm5bvh7f973e5.apps.googleusercontent.com
+            client-secret: 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
+            redirect-uri: "http://localhost:3000/oauth2/google/callback"
+            authorization-grant-type: authorization_code
+            scope:
+              - openid
+              - email
+              - profile
+        provider:
+          google:
+            authorization-uri: https://accounts.google.com/o/oauth2/auth
+            token-uri: https://oauth2.googleapis.com/token
+            user-info-uri: https://openidconnect.googleapis.com/v1/userinfo
+            user-name-attribute: sub
+
+app:
+  client-id: abcdefghijklmnopqrstuvwxyz1234567890
+  client-secret: rlagjstmd
+  redirect-uri: http://localhost:8080/app/login
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+    org.springframework.security.oauth2: DEBUG
+    org.springframework.web: DEBUG
