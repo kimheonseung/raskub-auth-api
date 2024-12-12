@@ -1,0 +1,97 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: raskub-auth-api
+  name: raskub-auth-api
+  namespace: raskub-app
+spec:
+  revisionHistoryLimit: 5
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 50%
+      maxUnavailable: 0%
+  selector:
+    matchLabels:
+      app: raskub-auth-api
+  template:
+    metadata:
+      labels:
+        app: raskub-auth-api
+    spec:
+      serviceAccount: raskub-auth-api-sa
+      securityContext:
+        fsGroup: 65534
+      containers:
+        - name: raskub-auth-api
+          image: khs920210/raskub-auth-api:23
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              protocol: TCP
+              containerPort: 8080
+          resources:
+            limits:
+              memory: 500Mi
+            requests:
+              cpu: 300m
+              memory: 500Mi
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8080
+            initialDelaySeconds: 120
+            periodSeconds: 10
+          env:
+            - name: SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENTID
+              valueFrom:
+                secretKeyRef:
+                  name: raskub-auth-api-secret
+                  key: SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENTID
+            - name: SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENTSECRET
+              valueFrom:
+                secretKeyRef:
+                  name: raskub-auth-api-secret
+                  key: SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENTSECRET
+            - name: SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_REDIRECTURI
+              valueFrom:
+                secretKeyRef:
+                  name: raskub-auth-api-secret
+                  key: SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_REDIRECTURI
+            - name: APIKEY_HEADER_CLIENTID
+              valueFrom:
+                secretKeyRef:
+                  name: raskub-auth-api-secret
+                  key: APIKEY_HEADER_CLIENTID
+            - name: APIKEY_HEADER_CLIENTNAME
+              valueFrom:
+                secretKeyRef:
+                  name: raskub-auth-api-secret
+                  key: APIKEY_HEADER_CLIENTNAME
+            - name: APIKEY_HEADER_CLIENTSECRET
+              valueFrom:
+                secretKeyRef:
+                  name: raskub-auth-api-secret
+                  key: APIKEY_HEADER_CLIENTSECRET
+            - name: APIKEY_SERVICES_COMMONAPI_CLIENTID
+              valueFrom:
+                secretKeyRef:
+                  name: raskub-auth-api-secret
+                  key: APIKEY_SERVICES_COMMONAPI_CLIENTID
+            - name: APIKEY_SERVICES_COMMONAPI_CLIENTNAME
+              valueFrom:
+                secretKeyRef:
+                  name: raskub-auth-api-secret
+                  key: APIKEY_SERVICES_COMMONAPI_CLIENTNAME
+            - name: APIKEY_SERVICES_COMMONAPI_CLIENTSECRET
+              valueFrom:
+                secretKeyRef:
+                  name: raskub-auth-api-secret
+                  key: APIKEY_SERVICES_COMMONAPI_CLIENTSECRET

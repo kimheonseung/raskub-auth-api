@@ -42,3 +42,4 @@ out/
 
 ### Kotlin ###
 .kotlin
+/src/main/resources/application.ignore.yaml

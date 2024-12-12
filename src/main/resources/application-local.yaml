@@ -1,0 +1,20 @@
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id:
+            client-secret:
+            redirect-uri:
+
+api-key:
+  header:
+    client-name: CLIENT-NAME
+    client-id: CLIENT-ID
+    client-secret: CLIENT-SECRET
+  services:
+    common-api:
+      client-name: COMMONAPI-CLIENT-NAME
+      client-id: COMMONAPI-CLIENT-ID
+      client-secret: COMMONAPI-CLIENT-SECRET
