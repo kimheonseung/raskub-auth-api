@@ -1,8 +1,8 @@
-package com.raskub.api.auth.oauth2.service
+package com.raskub.api.auth.oauth2.grant.authorization.service
 
 import com.raskub.api.auth.common.config.OAuth2ClientProperty
-import com.raskub.api.auth.oauth2.client.OAuth2GoogleTokenClient
-import com.raskub.api.auth.oauth2.model.OAuth2GoogleTokenRequest
+import com.raskub.api.auth.oauth2.grant.authorization.client.OAuth2GoogleTokenClient
+import com.raskub.api.auth.oauth2.grant.authorization.model.OAuth2GoogleTokenRequest
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.stereotype.Service
 

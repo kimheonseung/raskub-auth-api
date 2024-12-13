@@ -1,7 +1,7 @@
-package com.raskub.api.auth.oauth2.client
+package com.raskub.api.auth.oauth2.grant.authorization.client
 
-import com.raskub.api.auth.oauth2.model.OAuth2GoogleToken
-import com.raskub.api.auth.oauth2.model.OAuth2GoogleTokenRequest
+import com.raskub.api.auth.oauth2.grant.authorization.model.OAuth2GoogleToken
+import com.raskub.api.auth.oauth2.grant.authorization.model.OAuth2GoogleTokenRequest
 import feign.Headers
 import org.springframework.cloud.openfeign.FeignClient
 import org.springframework.web.bind.annotation.PostMapping

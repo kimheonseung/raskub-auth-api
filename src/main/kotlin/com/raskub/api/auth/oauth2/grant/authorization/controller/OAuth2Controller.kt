@@ -1,9 +1,9 @@
-package com.raskub.api.auth.oauth2.controller
+package com.raskub.api.auth.oauth2.grant.authorization.controller
 
 import com.raskub.api.auth.common.constant.URIConstant
-import com.raskub.api.auth.oauth2.controller.request.AuthorizeGoogleTokenRequest
-import com.raskub.api.auth.oauth2.controller.response.OAuth2Response
-import com.raskub.api.auth.oauth2.service.OAuth2Service
+import com.raskub.api.auth.oauth2.grant.authorization.controller.request.AuthorizeGoogleTokenRequest
+import com.raskub.api.auth.oauth2.grant.authorization.controller.response.OAuth2Response
+import com.raskub.api.auth.oauth2.grant.authorization.service.OAuth2Service
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
