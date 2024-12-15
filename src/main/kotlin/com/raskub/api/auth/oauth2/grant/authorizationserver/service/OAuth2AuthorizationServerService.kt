@@ -1,13 +1,13 @@
-package com.raskub.api.auth.oauth2.grant.authorization.service
+package com.raskub.api.auth.oauth2.grant.authorizationserver.service
 
-import com.raskub.api.auth.common.config.OAuth2ClientProperty
-import com.raskub.api.auth.oauth2.grant.authorization.client.OAuth2GoogleTokenClient
-import com.raskub.api.auth.oauth2.grant.authorization.model.OAuth2GoogleTokenRequest
+import com.raskub.api.auth.oauth2.grant.authorizationserver.client.OAuth2ClientProperty
+import com.raskub.api.auth.oauth2.grant.authorizationserver.client.OAuth2GoogleTokenClient
+import com.raskub.api.auth.oauth2.grant.authorizationserver.model.OAuth2GoogleTokenRequest
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.stereotype.Service
 
 @Service
-class OAuth2Service(
+class OAuth2AuthorizationServerService(
     private val oAuth2ClientProperty: OAuth2ClientProperty,
     private val oAuth2GoogleTokenClient: OAuth2GoogleTokenClient,
 ) {

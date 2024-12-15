@@ -1,4 +1,4 @@
-package com.raskub.api.auth.common.config
+package com.raskub.api.auth.oauth2.grant.authorizationserver.client
 
 import org.springframework.boot.context.properties.ConfigurationProperties
 
