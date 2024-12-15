@@ -1,5 +1,6 @@
-package com.raskub.api.auth.common.config
+package com.raskub.api.auth.oauth2.grant.authorizationserver.common.config
 
+import com.raskub.api.auth.oauth2.grant.authorizationserver.client.OAuth2ClientProperty
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
