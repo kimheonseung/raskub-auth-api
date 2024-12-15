@@ -1,8 +1,8 @@
-package com.raskub.api.auth.oauth2.common.advice.response
+package com.raskub.api.auth.common.response
 
 import com.fasterxml.jackson.annotation.JsonProperty
 
-data class ClientCredentialsErrorResponse(
+data class ApiErrorResponse(
     @JsonProperty("error_code")
     val code: Int,
     @JsonProperty("error_message")
