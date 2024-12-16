@@ -1,10 +1,10 @@
-package com.raskub.api.auth.oauth2.credentials.service
+package com.raskub.api.auth.credentials.service
 
+import com.raskub.api.auth.credentials.entity.Credentials
+import com.raskub.api.auth.credentials.model.CredentialsInformation
+import com.raskub.api.auth.credentials.provider.CredentialsProvider
+import com.raskub.api.auth.credentials.repository.CredentialsRepository
 import com.raskub.api.auth.oauth2.common.exception.ClientCredentialsAlreadyExistsException
-import com.raskub.api.auth.oauth2.credentials.entity.ClientCredentials
-import com.raskub.api.auth.oauth2.credentials.model.CredentialsInformation
-import com.raskub.api.auth.oauth2.credentials.provider.CredentialsProvider
-import com.raskub.api.auth.oauth2.credentials.repository.ClientCredentialsRepository
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.security.crypto.password.PasswordEncoder
@@ -12,10 +12,10 @@ import org.springframework.stereotype.Service
 
 @Service
 class CredentialsService(
-    private val clientCredentialsRepository: ClientCredentialsRepository,
+    private val credentialsRepository: CredentialsRepository,
     private val credentialsProvider: CredentialsProvider,
-    @Qualifier("clientSecretEncoder")
-    private val clientSecretEncoder: PasswordEncoder,
+    @Qualifier("bCryptPasswordEncoder")
+    private val bCryptPasswordEncoder: PasswordEncoder,
 ) {
     private val log = KotlinLogging.logger { }
 
@@ -25,19 +25,19 @@ class CredentialsService(
         val clientId = credentialsProvider.generateClientId()
         val clientSecret = credentialsProvider.generateClientSecretByClientId(clientId)
 
-        val clientCredentials = ClientCredentials(
+        val credentials = Credentials(
             clientName = clientName,
             clientId = clientId,
-            clientSecret = clientSecretEncoder.encode(clientSecret),
+            clientSecret = bCryptPasswordEncoder.encode(clientSecret),
             expiryDays = 365,
         )
 
         log.info { "clientName: $clientName, clientId: $clientId, clientSecret: $clientSecret" }
 
-        clientCredentialsRepository.findByClientName(clientName)?.let {
+        credentialsRepository.findByClientName(clientName)?.let {
             throw ClientCredentialsAlreadyExistsException()
         }
-        clientCredentialsRepository.save(clientCredentials)
+        credentialsRepository.save(credentials)
 
         return CredentialsInformation(
             clientName = clientName,

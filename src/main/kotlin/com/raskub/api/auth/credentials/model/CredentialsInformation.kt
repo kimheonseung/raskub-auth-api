@@ -1,4 +1,4 @@
-package com.raskub.api.auth.oauth2.credentials.model
+package com.raskub.api.auth.credentials.model
 
 import com.fasterxml.jackson.annotation.JsonProperty
 

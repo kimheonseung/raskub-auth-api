@@ -1,4 +1,4 @@
-package com.raskub.api.auth.oauth2.credentials.provider
+package com.raskub.api.auth.credentials.provider
 
 import org.springframework.stereotype.Component
 import java.security.SecureRandom

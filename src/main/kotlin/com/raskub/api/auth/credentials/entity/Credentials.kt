@@ -1,4 +1,4 @@
-package com.raskub.api.auth.oauth2.credentials.entity
+package com.raskub.api.auth.credentials.entity
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
@@ -6,8 +6,8 @@ import jakarta.persistence.GeneratedValue
 import jakarta.persistence.Id
 import java.time.LocalDate
 
-@Entity(name = "client_credentials")
-data class ClientCredentials(
+@Entity(name = "credentials")
+data class Credentials(
     @Id
     @GeneratedValue
     @Column(name = "id")

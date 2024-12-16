@@ -6,8 +6,6 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.Customizer
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
-import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.oauth2.core.AuthorizationGrantType
 import org.springframework.security.oauth2.server.authorization.client.InMemoryRegisteredClientRepository
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient
@@ -87,7 +85,4 @@ class OAuth2Config {
 
         return InMemoryRegisteredClientRepository(client)
     }
-
-    @Bean(name = ["clientSecretEncoder"])
-    fun clientSecretEncoder(): PasswordEncoder = BCryptPasswordEncoder()
 }
