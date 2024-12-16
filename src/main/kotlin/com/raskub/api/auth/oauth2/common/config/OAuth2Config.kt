@@ -12,11 +12,14 @@ import org.springframework.security.oauth2.core.AuthorizationGrantType
 import org.springframework.security.oauth2.server.authorization.client.InMemoryRegisteredClientRepository
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository
+import org.springframework.security.oauth2.server.authorization.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer
 import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings
+import org.springframework.security.oauth2.server.authorization.settings.TokenSettings
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.web.servlet.config.annotation.CorsRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
+import java.time.Duration
 import java.util.UUID
 
 @Configuration
@@ -44,49 +47,42 @@ class OAuth2Config {
     fun oAuth2AuthorizationSecurityFilterChain(http: HttpSecurity): SecurityFilterChain {
         OAuth2AuthorizationServerConfigurer.authorizationServer()
         return commonSecurityFilterChain(http)
-            .securityMatcher("${URIConstant.OAUTH2_BASE_URI_V1}authorization/google/**")
+            .securityMatcher("${URIConstant.OAUTH2_BASE_URI_V1}/authorization/google/**")
             .authorizeHttpRequests {
-                it.requestMatchers("${URIConstant.OAUTH2_BASE_URI_V1}authorization/google/**").permitAll()
+                it.requestMatchers("${URIConstant.OAUTH2_BASE_URI_V1}/authorization/google/**").permitAll()
                 it.anyRequest().authenticated()
             }
             .oauth2Login(Customizer.withDefaults())
             .build()
     }
 
-    @Bean
-    fun authorizationServerSettings(): AuthorizationServerSettings {
-        return AuthorizationServerSettings.builder()
-            .issuer("http://localhost:8080") // 인증 서버 주소
-            .tokenEndpoint("/oauth2/token")
-            .build()
+    @Bean(name = ["oAuth2CredentialsSecurityFilterChain"])
+    fun oAuth2CredentialsSecurityFilterChain(http: HttpSecurity): SecurityFilterChain {
+        OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http)
+        return http.build()
     }
 
-    // @Bean(name = ["oAuth2CredentialsSecurityFilterChain"])
-    // fun oAuth2CredentialsSecurityFilterChain(http: HttpSecurity): SecurityFilterChain {
-    //
-    //     return commonSecurityFilterChain(http)
-    //         .oau
-    // }
+    @Bean
+    fun clientCredentialsTokenServerSettings(): AuthorizationServerSettings {
+        return AuthorizationServerSettings.builder()
+            .issuer("http://localhost:8080") // 인증 서버 주소
+            .tokenEndpoint("${URIConstant.OAUTH2_BASE_URI_V1}/credentials/token")
+            .build()
+    }
 
     @Bean
     fun registeredClientRepository(): RegisteredClientRepository {
         val client = RegisteredClient.withId(UUID.randomUUID().toString())
-            .clientId("raskub")
-            .clientSecret("{noop}raskubpw")
-            .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-            .redirectUri("http://localhost:8080/re")
-            // .scope(OidcScopes.OPENID) // OpenID Connect 지원
-            // .clientSettings(
-            //     ClientSettings.builder()
-            //         .requireAuthorizationConsent(true)
-            //         .build()
-            // )
-            // .tokenSettings(
-            //     TokenSettings.builder()
-            //         .accessTokenTimeToLive(Duration.ofMinutes(30))
-            //         .refreshTokenTimeToLive(Duration.ofDays(7))
-            //         .build()
-            // )
+            .clientId("a959de29-ceda-4c39-9a4d-c486236b8802")
+            .clientSecret("\$2a\$10\$SP3ZCzD6Dw1bcjjEhPB5seRrGKkPeSYlhY7FAIQbuoxr5HTn1ke9m")
+            .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
+            .scope("read")
+            .tokenSettings(
+                TokenSettings.builder()
+                    .accessTokenTimeToLive(Duration.ofSeconds(30))
+                    .refreshTokenTimeToLive(Duration.ofSeconds(60))
+                    .build()
+            )
             .build()
 
         return InMemoryRegisteredClientRepository(client)
@@ -95,13 +91,3 @@ class OAuth2Config {
     @Bean(name = ["clientSecretEncoder"])
     fun clientSecretEncoder(): PasswordEncoder = BCryptPasswordEncoder()
 }
-
-//
-//    @Bean
-//    fun providerSettings(): AuthorizationServerSettings {
-//        return AuthorizationServerSettings.builder()
-//            .issuer("http://localhost:8080") // 인증 서버의 호스트 주소
-//            .authorizationEndpoint("/oauth2/authorization/app")
-//            .tokenEndpoint("/oauth2/authorization/app/token")
-//            .build()
-//    }
