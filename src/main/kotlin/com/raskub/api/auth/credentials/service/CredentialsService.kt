@@ -6,18 +6,16 @@ import com.raskub.api.auth.credentials.provider.CredentialsProvider
 import com.raskub.api.auth.credentials.repository.CredentialsRepository
 import com.raskub.api.auth.oauth2.common.exception.ClientCredentialsAlreadyExistsException
 import io.github.oshai.kotlinlogging.KotlinLogging
-import org.springframework.beans.factory.annotation.Qualifier
-import org.springframework.security.crypto.password.PasswordEncoder
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 
 @Service
 class CredentialsService(
     private val credentialsRepository: CredentialsRepository,
     private val credentialsProvider: CredentialsProvider,
-    @Qualifier("bCryptPasswordEncoder")
-    private val bCryptPasswordEncoder: PasswordEncoder,
 ) {
     private val log = KotlinLogging.logger { }
+    private val bCryptPasswordEncoder = BCryptPasswordEncoder()
 
     fun createClientCredentialsByClientName(
         clientName: String,

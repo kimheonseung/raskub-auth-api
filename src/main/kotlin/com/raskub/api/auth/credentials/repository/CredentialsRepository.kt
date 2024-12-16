@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository
 @Repository
 interface CredentialsRepository : JpaRepository<Credentials, Long> {
     fun findByClientName(clientName: String): Credentials?
+    fun findByClientId(clientId: String): Credentials?
 }

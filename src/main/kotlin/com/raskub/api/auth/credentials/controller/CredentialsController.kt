@@ -17,4 +17,7 @@ class CredentialsController(
     fun getByClientName(
         @RequestBody request: CreateClientCredentialsRequest,
     ) = ApiResponse(data = credentialsService.createClientCredentialsByClientName(request.clientName))
+
+    @PostMapping("/verify")
+    fun postVerify() = ApiResponse(data = true)
 }
