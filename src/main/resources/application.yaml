@@ -40,6 +40,17 @@ app:
   client-secret: rlagjstmd
   redirect-uri: http://localhost:8080/app/login
 
+api-key:
+  header:
+    client-name: X-RASKUB-AUTH-API-KEY-CLIENT-NAME
+    client-id: X-RASKUB-AUTH-API-KEY-CLIENT-ID
+    client-secret: X-RASKUB-AUTH-API-KEY-CLIENT-SECRET
+  services:
+    common-api:
+      client-name: commonApi
+      client-id: 920d57ef-4583-4baf-8441-20ea5464796b
+      client-secret: y8ZfayGyrXG19aY4UJlBpHnskG9k4xG0vdgRXXbLHyc=
+
 logging:
   level:
     org.springframework.security: DEBUG
