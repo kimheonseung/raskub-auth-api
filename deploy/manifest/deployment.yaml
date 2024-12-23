@@ -24,8 +24,8 @@ spec:
       securityContext:
         fsGroup: 65534
       containers:
-        - name: hello-world
-          image: khs920210/raskub-auth-api:2
+        - name: raskub-auth-api
+          image: khs920210/raskub-auth-api:3
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
@@ -51,7 +51,7 @@ spec:
             periodSeconds: 10
           volumeMounts:
             - name: raskub-auth-api-secret-volume
-              mountPath: "/etc/secrets"
+              mountPath: /etc/secrets
               readOnly: true
       volumes:
         - name: raskub-auth-api-secret-volume
