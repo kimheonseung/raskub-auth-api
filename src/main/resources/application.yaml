@@ -3,7 +3,7 @@ spring:
     kubernetes:
       enabled: true
       secrets:
-        name: raskub-auth-api-secrets
+        name: raskub-auth-api-secret
         enabled: true
         namespace: raskub-app
       config:
