@@ -15,9 +15,9 @@ spring:
       client:
         registration:
           google:
-            client-id:
-            client-secret:
-            redirect-uri:
+            client-id: ${SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENTID}
+            client-secret: ${SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENTSECRET}
+            redirect-uri: ${SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_REDIRECTURI}
             authorization-grant-type: authorization_code
             scope:
               - openid
@@ -51,14 +51,14 @@ app:
 
 api-key:
   header:
-    client-name:
-    client-id:
-    client-secret:
+    client-name: ${APIKEY_HEADER_CLIENTNAME}
+    client-id: ${APIKEY_HEADER_CLIENTID}
+    client-secret: ${APIKEY_HEADER_CLIENTSECRET}
   services:
     common-api:
-      client-name:
-      client-id:
-      client-secret:
+      client-name: ${APIKEY_SERVICES_COMMONAPI_CLIENTNAME}
+      client-id: ${APIKEY_SERVICES_COMMONAPI_CLIENTID}
+      client-secret: ${APIKEY_SERVICES_COMMONAPI_CLIENTSECRET}
 
 management:
   endpoint:
