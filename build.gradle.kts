@@ -10,7 +10,6 @@ plugins {
 }
 
 group = "com.raskub.api"
-version = "0.0.1-SNAPSHOT"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_21
@@ -53,4 +52,8 @@ dependencyManagement {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+tasks.bootJar {
+    archiveBaseName.set("raskub-auth-api")
 }
