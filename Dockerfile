@@ -1,4 +1,4 @@
-FROM openjdk:17-slim
+FROM openjdk:21-slim
 ARG APP_NAME=raskub-auth-api
 
 ARG SRC_DIR=/opt/raskub-auth-api
