@@ -1,0 +1,128 @@
+name: "RASKUB Auth API Application CI/CD"
+run-name: "[RASKUB Auth API] 배포합니다."
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: zulu
+          java-version: 17
+          cache: 'gradle'
+
+      - name: Gradle caching
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Grant execute permission for gradle
+        run: chmod +x ./gradlew
+
+      - name: Gradle build
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: build -x test --stacktrace --parallel
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Login to Dockerhub
+        uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: Dockerfile
+          push: true
+          tags: khs920210/raskub-auth-api:${{ github.run_number }}
+          platforms: |
+            linux/amd64
+            linux/arm64/v8
+
+  publish:
+    name: Publish
+    needs: [ build ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.PAT }}
+
+      - name: Setup git
+        run: |
+          git config user.name "Github Action Bot"
+          git config user.email "<>"
+
+      - name: Create temp directory (if not exists)
+        run: mkdir -p tmp
+
+      - name: Setup python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: pip install jsonschema
+
+      - name: Setup yq
+        uses: frenck/action-setup-yq@v1
+
+      - name: Convert yaml to json
+        run: |
+          yq -o json ./deploy/manifest/deployment.yaml > tmp/output.json
+
+      - name: Update json file
+        run: |
+          python - <<EOF
+          import json
+          # Load the JSON data from output.json
+          with open('tmp/output.json', 'r') as json_file:
+              data = json.load(json_file)
+          # Find and update the image value
+          for containers in data['spec']['template']['spec']['containers']:
+              if containers['name'] == 'raskub-auth-api':
+                  containers['image'] = 'khs920210/raskub-auth-api:${{ github.run_number }}'
+          # Save the modified JSON data back to output.json
+          with open('tmp/output.json', 'w') as json_file:
+              json.dump(data, json_file, indent=2)
+          with open('tmp/output.json', 'r') as json_file:
+              content = json_file.read()
+              print(content)
+          EOF
+
+      - name: Make final yaml from json
+        run: |
+          cat tmp/output.json | yq -P > tmp/deployment.yaml
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.name "Github Action Bot"
+          git config --global user.email "<>"
+          ls
+          rm ./deploy/manifest/deployment.yaml
+          cp tmp/deployment.yaml ./deploy/manifest/deployment.yaml
+          git add ./deploy/manifest/deployment.yaml
+          git commit -m "Update image to version ${{ GITHUB.RUN_NUMBER }}"
+          git push
