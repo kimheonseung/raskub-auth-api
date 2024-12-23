@@ -25,7 +25,7 @@ spec:
         fsGroup: 65534
       containers:
         - name: hello-world
-          image: khs920210/raskub-auth-api:0
+          image: khs920210/raskub-auth-api:2
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
