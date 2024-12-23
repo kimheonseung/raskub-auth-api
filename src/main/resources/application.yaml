@@ -1,4 +1,13 @@
 spring:
+  cloud:
+    kubernetes:
+      enabled: true
+      secrets:
+        name: raskub-auth-api-secrets
+        enabled: true
+        namespace: raskub-app
+      config:
+        enabled: false
   application:
     name: raskub-auth-api
   security:
@@ -6,9 +15,9 @@ spring:
       client:
         registration:
           google:
-            client-id: 71901923772-bc50k353hk0ll3d749umm5bvh7f973e5.apps.googleusercontent.com
-            client-secret: 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
-            redirect-uri: "http://localhost:3000/oauth2/google/callback"
+            client-id:
+            client-secret:
+            redirect-uri:
             authorization-grant-type: authorization_code
             scope:
               - openid
@@ -42,14 +51,14 @@ app:
 
 api-key:
   header:
-    client-name: X-RASKUB-AUTH-API-KEY-CLIENT-NAME
-    client-id: X-RASKUB-AUTH-API-KEY-CLIENT-ID
-    client-secret: X-RASKUB-AUTH-API-KEY-CLIENT-SECRET
+    client-name:
+    client-id:
+    client-secret:
   services:
     common-api:
-      client-name: commonApi
-      client-id: 920d57ef-4583-4baf-8441-20ea5464796b
-      client-secret: y8ZfayGyrXG19aY4UJlBpHnskG9k4xG0vdgRXXbLHyc=
+      client-name:
+      client-id:
+      client-secret:
 
 logging:
   level:

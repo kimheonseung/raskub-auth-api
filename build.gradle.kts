@@ -26,6 +26,8 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-oauth2-authorization-server")
     implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
     implementation("org.springframework.cloud:spring-cloud-starter-openfeign")
+    implementation("org.springframework.cloud:spring-cloud-starter-kubernetes-client")
+    implementation("org.springframework.cloud:spring-cloud-starter-kubernetes-client-config")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("io.github.oshai:kotlin-logging-jvm:5.1.1")
     implementation("com.h2database:h2")
