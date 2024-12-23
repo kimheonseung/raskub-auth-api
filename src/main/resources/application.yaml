@@ -60,6 +60,15 @@ api-key:
       client-id:
       client-secret:
 
+management:
+  endpoint:
+    configprops:
+      show-values: always
+  endpoints:
+    web:
+      exposure:
+        include: health, configprops
+
 logging:
   level:
     org.springframework.security: DEBUG

@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: raskub-auth-api
+  name: raskub-auth-api
+  namespace: raskub-app
+spec:
+  revisionHistoryLimit: 5
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 50%
+      maxUnavailable: 0%
+  selector:
+    matchLabels:
+      app: raskub-auth-api
+  template:
+    metadata:
+      labels:
+        app: raskub-auth-api
+    spec:
+      serviceAccount: raskub-auth-api-sa
+      securityContext:
+        fsGroup: 65534
+      containers:
+        - name: hello-world
+          image: khs920210/raskub-auth-api:0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              protocol: TCP
+              containerPort: 8080
+          resources:
+            limits:
+              memory: 500Mi
+            requests:
+              cpu: 300m
+              memory: 500Mi
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8080
+            initialDelaySeconds: 120
+            periodSeconds: 10
+          volumeMounts:
+            - name: raskub-auth-api-secret-volume
+              mountPath: "/etc/secrets"
+              readOnly: true
+      volumes:
+        - name: raskub-auth-api-secret-volume
+          secret:
+            secretName: raskub-auth-api-secret
