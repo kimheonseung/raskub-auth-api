@@ -1,0 +1,64 @@
+<html lang="ko"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#000000">
+    <meta name="description" content="Web site created using create-react-app">
+    <title>RASKUB Login</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+            'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+            sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        code {
+            font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+            monospace;
+        }
+
+    </style>
+</head>
+<script th:inline="javascript">
+    const queryParams = new URLSearchParams(window.location.search);
+    const authCode = queryParams.get('code');
+    console.log(authCode)
+    if (authCode) {
+        // 2. Authorization Code를 백엔드로 전송
+        const csrfToken = document.cookie
+            .split('; ')
+            .find(row => row.startsWith('XSRF-TOKEN='))
+            ?.split('=')[1];
+        fetch(`/auth/api/v1/oauth2/authorization/google/token`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                "X-XSRF-TOKEN": csrfToken, // CSRF 토큰 추가
+            },
+            body: JSON.stringify({code: authCode}),
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                // 3. 백엔드로부터 JWT를 받아 저장
+                localStorage.setItem('token', data.token);
+
+                // 4. 로그인 성공 후 리디렉션
+                // navigate('/dashboard');
+                console.log(data);
+            })
+            .catch((error) => {
+                console.error('Error during token exchange:', error);
+            });
+    }
+</script>
+<body>
+<div id="root">
+    <h2>Processing login...</h2>
+</div>
+</body>
+</html>

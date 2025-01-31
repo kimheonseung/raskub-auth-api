@@ -4,17 +4,27 @@ spring:
       client:
         registration:
           google:
-            client-id:
-            client-secret:
-            redirect-uri:
+            client-id: ${SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENTID:default}
+            client-secret: ${SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENTSECRET:default}
+            redirect-uri: ${SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_REDIRECTURI:default}
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:default}
+    username: ${SPRING_DATASOURCE_USERNAME:default}
+    password: ${SPRING_DATASOURCE_PASSWORD:default}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    open-in-view: false
 
 api-key:
   header:
-    client-name: CLIENT-NAME
-    client-id: CLIENT-ID
-    client-secret: CLIENT-SECRET
+    client-name: ${APIKEY_HEADER_CLIENTNAME:default}
+    client-id: ${APIKEY_HEADER_CLIENTID:default}
+    client-secret: ${APIKEY_HEADER_CLIENTSECRET:default}
   services:
     common-api:
-      client-name: COMMONAPI-CLIENT-NAME
-      client-id: COMMONAPI-CLIENT-ID
-      client-secret: COMMONAPI-CLIENT-SECRET
+      client-name: ${APIKEY_SERVICES_COMMONAPI_CLIENTNAME:default}
+      client-id: ${APIKEY_SERVICES_COMMONAPI_CLIENTID:default}
+      client-secret: ${APIKEY_SERVICES_COMMONAPI_CLIENTSECRET:default}

@@ -7,6 +7,16 @@ spring:
             client-id: ${SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENTID:default}
             client-secret: ${SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENTSECRET:default}
             redirect-uri: ${SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_REDIRECTURI:default}
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:default}
+    username: ${SPRING_DATASOURCE_USERNAME:default}
+    password: ${SPRING_DATASOURCE_PASSWORD:default}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    open-in-view: false
 
 api-key:
   header:

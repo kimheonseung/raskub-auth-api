@@ -2,12 +2,10 @@ package com.raskub.api.auth.common.config
 
 import io.fabric8.kubernetes.api.model.Secret
 import io.fabric8.kubernetes.client.KubernetesClientBuilder
-import jakarta.annotation.PostConstruct
-import org.springframework.stereotype.Component
 
-@Component
+// @Component
 class KubernetesSecretPrinter {
-    @PostConstruct
+    // @PostConstruct
     fun printSecrets() {
         KubernetesClientBuilder().build().use { client ->
             val secret: Secret? = client.secrets().inNamespace("raskub-app")
